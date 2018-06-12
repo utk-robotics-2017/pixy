@@ -15,7 +15,7 @@
 
 #include "timer.hpp"
 
-using namespace boost::chrono;
+using namespace std::chrono;
 
 util::timer::timer()
 {
@@ -30,9 +30,9 @@ void util::timer::reset()
 uint32_t util::timer::elapsed()
 {
   steady_clock::time_point mark;
-  
+
   // Compute difference in time //
-  
+
   mark = steady_clock::now();
   return duration_cast<milliseconds>(mark - epoch_).count();
 }

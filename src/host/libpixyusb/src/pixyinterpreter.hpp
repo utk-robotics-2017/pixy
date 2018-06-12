@@ -17,8 +17,8 @@
 #define __PIXYINTERPRETER_HPP__
 
 #include <vector>
-#include <boost/thread.hpp>
-#include <boost/thread/mutex.hpp>
+#include <thread>
+#include <mutex>
 #include "pixytypes.h"
 #include "pixy.h"
 #include "usblink.h"
@@ -35,19 +35,19 @@ class PixyInterpreter : public Interpreter
     ~PixyInterpreter();
 
     /**
-      @brief  Spawns an 'interpreter' thread which attempts to 
-              connect to Pixy using the USB interface. 
-              On successful connection, this thread will 
-              capture and store Pixy 'block' object data 
+      @brief  Spawns an 'interpreter' thread which attempts to
+              connect to Pixy using the USB interface.
+              On successful connection, this thread will
+              capture and store Pixy 'block' object data
               which can be retreived using the getBlocks()
               method.
        @return   0    Success
        @return  -1    Error: Unable to open pixy USB device
 
     */
-  
+
     int init();
-    
+
     /**
       @brief  Terminates the USB connection to Pixy and
               the 'iterpreter' thread.
@@ -55,8 +55,8 @@ class PixyInterpreter : public Interpreter
     void close();
 
    /**
-     @brief      Get status of the block data received from Pixy. 
- 
+     @brief      Get status of the block data received from Pixy.
+
      @return  0  Stale Data: Block data has previously been retrieved using 'pixy_get_blocks()'.
      @return  1  New Data: Pixy sent new data that has not been retrieve yet.
    */
@@ -64,7 +64,7 @@ class PixyInterpreter : public Interpreter
 
     /**
       @brief      Copies up to 'max_blocks' number of Blocks to the address pointed
-                  to by 'blocks'. 
+                  to by 'blocks'.
       @param[in]  max_blocks Maximum number of Blocks to copy to the address pointed to
                              by 'blocks'.
       @param[out] blocks     Address of an array in which to copy the blocks to.
@@ -95,15 +95,15 @@ class PixyInterpreter : public Interpreter
     int send_command(const char * name, ...);
 
   private:
-    
+
     ChirpReceiver *    receiver_;
     USBLink            link_;
-    boost::thread      thread_;
+    std::thread      thread_;
     bool               thread_die_;
     bool               thread_dead_;
     std::vector<Block> blocks_;
-    boost::mutex       blocks_access_mutex_;
-    boost::mutex       chirp_access_mutex_;
+    std::mutex       blocks_access_mutex_;
+    std::mutex       chirp_access_mutex_;
     bool               blocks_are_new_;
 
     /**
@@ -115,7 +115,7 @@ class PixyInterpreter : public Interpreter
               2. Interpretes Pixy messages and saves
                  pixy 'block' objects.
     */
-    void interpreter_thread(); 
+    void interpreter_thread();
 
     /**
       @brief Interprets data sent from Pixy over the Chirp protocol.

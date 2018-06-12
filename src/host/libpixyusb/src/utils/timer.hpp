@@ -18,22 +18,22 @@
 
 #include <stdint.h>
 #include <string>
-#include <boost/chrono.hpp>
+#include <chrono>
 
 namespace util
 {
-  class timer 
+  class timer
   {
     public:
 
       timer();
-      
+
       void     reset();
       uint32_t elapsed();
 
     private:
-    
-      boost::chrono::steady_clock::time_point epoch_;
+
+      std::chrono::steady_clock::time_point epoch_;
   };
 }
 

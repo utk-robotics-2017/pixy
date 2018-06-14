@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <cstring>
 #include "pixy.h"
 #include "pixyinterpreter.hpp"
 
